@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   description: 'A page with room rentals.'
 };
 
+type Me = User & { starredRoomIds: number[] };
+
 async function fetchCurrentUser() {
   const response = await fetch(API_URL + '/users/me', {cache: 'no-store'});
   if (response.status === 401) {
@@ -20,7 +22,7 @@ async function fetchCurrentUser() {
     throw new Error('User could not be loaded');
   }
 
-  return response.json() as Promise<User>;
+  return response.json() as Promise<Me | null>;
 }
 
 export default async function RootLayout({children}: {children: ReactNode}) {

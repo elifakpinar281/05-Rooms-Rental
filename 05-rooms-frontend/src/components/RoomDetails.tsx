@@ -1,5 +1,8 @@
 import {Room} from '../types';
 import Image from 'next/image'; 
+import StarButton from './StarButton'
+
+type RoomWithStarred = Room & { isStarred: boolean };
 
 function formatDate(dateString: string) {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -16,11 +19,14 @@ function formatPrice(amount: number, currency: string) {
     }).format(amount);
   }
 
-  export default function RoomDetails({room}: {room: Room}) {
+  export default function RoomDetails({room}: {room: RoomWithStarred}) {
     return (
       <div className="flex flex-col justify-between min-h-full">
       <div className="flex flex-col gap-3">
-        <h1 className="text-4xl font-bold text-gray-900">{room.title}</h1>
+      <div className="flex items-start justify-between gap-4">
+          <h1 className="text-4xl font-bold text-gray-900">{room.title}</h1>
+          <StarButton roomId={room.id} isStarred={room.isStarred} />
+      </div>
         <p className="text-gray-600 leading-relaxed">{room.description}</p>
         <p className="text-sm text-gray-400">
           Added on {formatDate(room.createdAt)}

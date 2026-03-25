@@ -3,10 +3,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Navigation from './Navigation';
 
+type Me = User & { starredRoomIds: number[] };
+
 type Props = {
-    user: User;
+    user: Me | null;
   };
-  
   
 export default function Header({user}: Props) {
     return (
@@ -19,18 +20,23 @@ export default function Header({user}: Props) {
         </h1>
             <Navigation />
         </div>
-        <UserAvatar user={user} />
+        {user ? <UserAvatar user={user} /> : null}
         </header>
     );
 }
    
 function UserAvatar({user}: Props) {
     return (
-        <div className="flex mr-70 items-center gap-3">
-        <Image src={user.portraitUrl} alt={`${user.firstName} ${user.lastName}`} height={35} width={35} aria-label="Avatar of the user" className="w-8 h-8 rounded-full object-cover"/>
-        <span className="text-m font-semibold text-gray-900">
-            {user.firstName} {user.lastName}
-        </span>
+        <div className="flex mr-70 items-center">
+            <Image src={user.portraitUrl} alt={`${user.firstName} ${user.lastName}`} height={35} width={35} aria-label="Avatar of the user" className="rounded-full object-cover"/>
+            <div className="flex flex-col items-end leading-tight text-right">
+                <span className="text-m font-semibold text-gray-900">
+                    {user.firstName} {user.lastName}
+                </span>
+                <span className="text-sm text-gray-600 font-medium tabular-nums">
+                    <span className="inline-block w-6 text-right">{user.starredRoomIds.length}</span> starred rooms
+                </span>
+            </div>
         </div>
     );
 }

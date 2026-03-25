@@ -15,7 +15,6 @@ export default function CreateRoomForm() {
   return (
     <form action={formAction} className="flex flex-col gap-5">
       {state.error && <ErrorMessage message={state.error} />}
- 
       <FormField label="Title" id="title" type="text" disabled={isPending}
         placeholder="e.g. Cozy cabin" defaultValue={state.values?.title ?? ''} />
  
@@ -78,8 +77,9 @@ function PriceField({disabled, defaultValue}: {disabled: boolean, defaultValue?:
  
 function ErrorMessage({message}: {message: string}) {
   return (
-    <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
-      {message}
+    <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 flex gap-2 shadown-sm">
+      <span>⚠︎</span>
+      <span>{message}</span>
     </div>
   );
 }
