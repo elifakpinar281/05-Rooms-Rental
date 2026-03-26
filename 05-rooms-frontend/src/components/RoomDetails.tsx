@@ -1,7 +1,6 @@
 import {Room} from '../types';
 import Image from 'next/image'; 
 import StarButton from './StarButton'
-import { API_URL } from '../config';
 
 type RoomWithStarred = Room & { isStarred: boolean };
 
