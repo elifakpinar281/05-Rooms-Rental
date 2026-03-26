@@ -22,6 +22,22 @@ async function fetchRoom(roomId: string): Promise<Room | null> {
   }
   return response.json() as Promise<Room>;
 }
+
+async function fetchUser() {
+  const res = await fetch(`${API_URL}/users/me`, {
+    cache: 'no-store'
+  });
+
+  if (res.status === 401) {
+    return null;
+  }
+
+  if (!res.ok) {
+    throw new Error('User could not be loaded');
+  }
+
+  return res.json();
+}
  
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { roomId } = await params;
@@ -32,19 +48,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
  
 export default async function RoomDetailPage({params}: Props) {
   const {roomId} = await params;
-  const room = await fetchRoom(roomId);
+  const [room, user] = await Promise.all([fetchRoom(roomId), fetchUser()]);
  
   if (!room) {
     notFound();
   }
+
+  const roomWithStarred = {
+    ...room,
+    isStarred: user?.starredRoomIds?.includes(room.id) ?? false
+  };
  
   return (
     <div className="flex gap-8 ml-70 mr-70 items-stretch">
       <div className="flex-1">
-        <RoomHeroImage url={room.heroUrl} title={room.title} />
+       <RoomHeroImage url={room.heroUrl} title={room.title} />
       </div>
       <div className="flex-1">
-        <RoomDetails room={room} />
+        <RoomDetails room={roomWithStarred} />
       </div>
     </div>
   );

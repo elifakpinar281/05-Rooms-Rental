@@ -3,9 +3,10 @@
 import {useState, useTransition} from 'react';
 import {toggleStarred} from '../app/rooms/actions';
 
-export default function StarButton({roomId, isStarred}: {roomId: number; isStarred: boolean}) {
+export default function StarButton({roomId, isStarred: initialStarred}: {roomId: number; isStarred: boolean}) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [isStarred, setIsStarred] = useState<boolean>(initialStarred);
 
   return (
     <div className="flex flex-col items-end">
@@ -16,8 +17,10 @@ export default function StarButton({roomId, isStarred}: {roomId: number; isStarr
             const result = await toggleStarred(roomId);
             if (!result.ok) {
                 setError(result.error);
+            } else {
+              setIsStarred(prev => !prev);
             }
-          });
+        });
         }}>
         {isStarred ? '★' : '☆'}
       </button>
