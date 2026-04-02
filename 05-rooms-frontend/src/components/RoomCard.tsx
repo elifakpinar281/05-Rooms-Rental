@@ -23,7 +23,7 @@ export default function RoomCard({room}: {room: Room}) {
   return (
     <Link href={`/rooms/${room.id}`}
       className="group block rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:ring-offset-2">
-      <RoomImage url={room.heroUrl} title={room.title} />
+      <RoomImage url={room.heroUrl} title={room.title}/>
       <div className="p-4 flex flex-col gap-1">
         <h2 className="font-semibold text-gray-900 truncate">{room.title}</h2>
         <p className="text-sm text-gray-500 line-clamp-2">{room.description}</p>
@@ -45,7 +45,7 @@ export default function RoomCard({room}: {room: Room}) {
 function RoomImage({url, title}: {url: string; title: string}) {
   return (
     <div className="relative h-44 bg-gray-100">
-      <Image src={url} alt={title} fill className="object-cover group-hover:scale-105 transition-transform duration-300" 
+      <Image src={url} alt={title} fill className="object-cover group-hover:scale-105 priority transition-transform duration-300" 
       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"/>
     </div>
   );
